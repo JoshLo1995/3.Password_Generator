@@ -1,0 +1,13 @@
+.container {
+    border: 2px solid black;
+
+}
+
+header, h2 {
+    text-align: center;
+}
+
+textarea {
+    text-align: center;
+    margin-left: auto;
+}
