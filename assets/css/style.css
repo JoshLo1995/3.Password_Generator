@@ -1,5 +1,12 @@
-.container {
-    border: 2px solid black;
+.container-fluid {
+    border: 2px solid #03396c;
+    padding: 10px;
+    background-color: #005b96;
+    max-width: 500px;
+    min-width: 450px;
+    border-radius: 5px;
+    box-shadow: 1px 5px 4px #03396c;
+
 
 }
 
@@ -7,7 +14,29 @@ header, h2 {
     text-align: center;
 }
 
+h1, h2 {
+    color: #b3cde0;
+    font-family: Lato;
+    
+}
+
 textarea {
     text-align: center;
     margin-left: auto;
+    background-color: #6497b1;
+    color: #b3cde0;
+    border: 2px dashed #b3cde0;
+    border-radius: 10px;
 }
+
+button {
+    background-color: #03396c;
+    text-align: center;
+    position: relative;
+    color: #b3cde0;
+    border-radius: 25px;
+    transform: translateX(60%);
+    margin-left: 2.5px;
+    margin-right: 2.5px;
+}
+
