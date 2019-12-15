@@ -32,9 +32,7 @@ for (let i = 0; i < lowerAlphabet.length; i++) {
 function init() {
     let charsAllowed = [];
 
-    // Get user input 
-
-    // Bug where "undefined" is being printed when using special characters only
+    // Get user input by prompting for character preferences
     let specialsPrompt = confirm("Do you want to have special characters in your password?");
     if(specialsPrompt) {
         charsAllowed.push('!','@','#','$','%','^','&','*','(',')','-','+','=','\`', '\"','~',"\/","\\",'{','}','[',']');
@@ -53,6 +51,7 @@ function init() {
             charsAllowed.push(lowerAlphabet[i]);
         }
     }
+
     let uppersPrompt = confirm("Do you want uppercase letters in your password?");
     if(uppersPrompt) {
         for (let i = 0; i < upperAlphabet.length; i++) {
@@ -84,9 +83,8 @@ function init() {
             break;
         }
     }
-
-    // End user input
-    
+    // End user input 
+       
     let pw = "";
     // Creating password through concatanation.
     for(let i = 0; i < pwl; i++) {
@@ -104,18 +102,11 @@ function init() {
 }
 
 // End Init
-
-
-
-
-
     // Generate a new password
     document.getElementById('generate').addEventListener("click", function() {
         init();
     });
     // End generate a new password
-
-
 
     // Copy the generated passsword
     document.getElementById('copy').addEventListener("click", function() {
