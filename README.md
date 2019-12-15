@@ -8,9 +8,10 @@ Download the repository and begin by opening the index.html file. To generate a 
 https://joshlo1995.github.io/3.Password_Generator/
 
 ## Screenshot
-![Alt text](assets/images/Screenshot.png?raw = true "Screenshot");\
+![Screenshot](assets/images/Screenshot.png)
+
 ## Authors
-- Joshua Lo 
+- Joshua Lo
 
 ## Acknowledgements
 - My dogs, Taco and Nando
