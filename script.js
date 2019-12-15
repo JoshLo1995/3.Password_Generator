@@ -31,17 +31,21 @@ for (let i = 0; i < lowerAlphabet.length; i++) {
 // Initializing all boolean values with prompts
 function init() {
     let charsAllowed = [];
+    let specials = ['!','@','#','$','%','^','&','*','(',')','-','+','=','\`', '\"','~',"\/","\\",'{','}','[',']']
+    let numbers = [];
+    
 
     // Get user input by prompting for character preferences
     let specialsPrompt = confirm("Do you want to have special characters in your password?");
     if(specialsPrompt) {
-        charsAllowed.push('!','@','#','$','%','^','&','*','(',')','-','+','=','\`', '\"','~',"\/","\\",'{','}','[',']');
+        charsAllowed.push(specials);
     }
 
     let numbersPrompt = confirm("Do you want numbers in your password?");
     if(numbersPrompt) {
         for (let i = 0; i < 10; i++) {
             charsAllowed.push(i);
+            numbers.push(i);
         }
     }
     
@@ -98,8 +102,87 @@ function init() {
         // console.log(pw);
     }
 
+    // Ensuring that at least one of each desired character type is inserted into the password
+    let prevIndex = [];
+    console.log("Specials Prompt: " + specialsPrompt);
+    if (specialsPrompt) {
+        let randInsert = Math.round(Math.random() * (pw.length - 1));
+        if(prevIndex.includes(randInsert)) {
+            while (prevIndex.includes(randInsert)) {
+                console.log("Previous element has been replaced, trying again");
+                randInsert = Math.round(Math.random() * (pw.length - 1));    
+            }
+        }
+    let replacer = specials[Math.round(Math.random() * specials.length - 1)];
+    console.log("Replacing " + pw[randInsert] + " at " + randInsert + " with " + replacer);
+    // wtf strings are immutable in javascript and must be changed another way
+    // pw[randInsert] = specials[replacer];
+    pw = pw.substr(0, randInsert) + replacer + pw.substr(randInsert + 1);
+    prevIndex.push(randInsert);
+    console.log(prevIndex);
+    
+    }
+
+    console.log("Numbers Prompt: " + numbersPrompt);
+    if (numbersPrompt) {
+        let randInsert = Math.round(Math.random() * (pw.length - 1));
+        if(prevIndex.includes(randInsert)) {
+            while (prevIndex.includes(randInsert)) {
+                console.log("Previous element has been replaced, trying again");
+                randInsert = Math.round(Math.random() * (pw.length - 1));    
+            }
+        } 
+    let replacer = numbers[Math.round(Math.random() * numbers.length - 1)];
+    console.log("Replacing " + pw[randInsert] + " at " + randInsert + " with " + replacer);
+    // wtf strings are immutable in javascript and must be changed another way
+    // pw[randInsert] = specials[replacer];
+    pw = pw.substr(0, randInsert) + replacer + pw.substr(randInsert + 1);
+    prevIndex.push(randInsert);
+    console.log(prevIndex);
+    }
+
+    console.log("Lowers Prompt: " + lowersPrompt);
+    if (lowersPrompt) {
+        let randInsert = Math.round(Math.random() * (pw.length - 1));
+        if(prevIndex.includes(randInsert)) {
+            while (prevIndex.includes(randInsert)) {
+                console.log("Previous element has been replaced, trying again");
+                randInsert = Math.round(Math.random() * (pw.length - 1));    
+            }
+        } 
+        let replacer = lowerAlphabet[Math.round(Math.random() * lowerAlphabet.length - 1)];
+        console.log("Replacing " + pw[randInsert] + " at " + randInsert + " with " + replacer);
+        // wtf strings are immutable in javascript and must be changed another way
+        // pw[randInsert] = specials[replacer];
+        pw = pw.substr(0, randInsert) + replacer + pw.substr(randInsert + 1);
+        prevIndex.push(randInsert);
+        console.log(prevIndex);
+        
+    }
+
+
+    console.log("Uppers Prompt: " + uppersPrompt);
+    if (uppersPrompt) {
+        let randInsert = Math.round(Math.random() * (pw.length - 1));
+        if(prevIndex.includes(randInsert)) {
+            while (prevIndex.includes(randInsert)) {
+                console.log("Previous element has been replaced, trying again");
+                randInsert = Math.round(Math.random() * (pw.length - 1));    
+            }
+        } 
+        let replacer = upperAlphabet[Math.round(Math.random() * upperAlphabet.length - 1)];
+        console.log("Replacing " + pw[randInsert] + " at " + randInsert + " with " + replacer);
+        // wtf strings are immutable in javascript and must be changed another way
+        // pw[randInsert] = specials[replacer];
+        pw = pw.substr(0, randInsert) + replacer + pw.substr(randInsert + 1);
+        prevIndex.push(randInsert);
+        console.log(prevIndex);
+    }
+
+
     // Sets the password field to the generated password
     document.getElementById("password").textContent = pw;
+    console.log(pw.length);
 }
 
 // End Init
