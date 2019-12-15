@@ -18,8 +18,9 @@
 
 // Your application's GitHub repository should contain a README.md file explaining the purpose and functionality of the application. The README.md file should include a screenshot of the completed application as well as a link to the deployed GitHub Pages URL.
 
-lowerAlphabet = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
-upperAlphabet = [];
+const lowerAlphabet = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
+const upperAlphabet = [];
+let prevIndex = [];
 
 //Created a for loop to fill the upper alphabet because lazy
 for (let i = 0; i < lowerAlphabet.length; i++) {
@@ -30,6 +31,7 @@ for (let i = 0; i < lowerAlphabet.length; i++) {
 // Initializing array to store allowed charactrers for the password
 // Initializing all boolean values with prompts
 function init() {
+    prevIndex = [];
     let charsAllowed = [];
     let specials = ['!','@','#','$','%','^','&','*','(',')','-','+','=','\`', '\"','~',"\/","\\",'{','}','[',']']
     let numbers = [];
@@ -69,7 +71,6 @@ function init() {
 
     }
 
-
     // While loop that ensures user input is valid by checking type. Also gives user an option to exit out of the program.
     let pwl = null;
     while(true) {
@@ -103,106 +104,62 @@ function init() {
     }
 
     // Ensuring that at least one of each desired character type is inserted into the password
-    let prevIndex = [];
+    
     console.log("Specials Prompt: " + specialsPrompt);
-    if (specialsPrompt) {
-        let randInsert = Math.round(Math.random() * (pw.length - 1));
+    replace(specialsPrompt, specials);
+ 
+    console.log("Numbers Prompt: " + numbersPrompt);
+    replace(numbersPrompt, numbers);
+
+    console.log("Lowers Prompt: " + lowersPrompt);
+    replace(lowersPrompt, lowerAlphabet);
+
+    console.log("Uppers Prompt: " + uppersPrompt);
+    replace(uppersPrompt, upperAlphabet);
+
+    // Sets the password field to the generated password
+    document.getElementById("password").textContent = pw;
+    console.log(pw.length);
+
+    
+    function replace(bool, chars) {
+        if (bool) {
+            let randInsert = Math.round(Math.random() * (pw.length - 1));
         if(prevIndex.includes(randInsert)) {
             while (prevIndex.includes(randInsert)) {
                 console.log("Previous element has been replaced, trying again");
                 randInsert = Math.round(Math.random() * (pw.length - 1));    
             }
         }
-    let replacer = specials[Math.round(Math.random() * specials.length - 1)];
-    console.log("Replacing " + pw[randInsert] + " at " + randInsert + " with " + replacer);
-    // wtf strings are immutable in javascript and must be changed another way
-    // pw[randInsert] = specials[replacer];
-    pw = pw.substr(0, randInsert) + replacer + pw.substr(randInsert + 1);
-    prevIndex.push(randInsert);
-    console.log(prevIndex);
-    
-    }
-
-    console.log("Numbers Prompt: " + numbersPrompt);
-    if (numbersPrompt) {
-        let randInsert = Math.round(Math.random() * (pw.length - 1));
-        if(prevIndex.includes(randInsert)) {
-            while (prevIndex.includes(randInsert)) {
-                console.log("Previous element has been replaced, trying again");
-                randInsert = Math.round(Math.random() * (pw.length - 1));    
-            }
-        } 
-    let replacer = numbers[Math.round(Math.random() * numbers.length - 1)];
-    console.log("Replacing " + pw[randInsert] + " at " + randInsert + " with " + replacer);
-    // wtf strings are immutable in javascript and must be changed another way
-    // pw[randInsert] = specials[replacer];
-    pw = pw.substr(0, randInsert) + replacer + pw.substr(randInsert + 1);
-    prevIndex.push(randInsert);
-    console.log(prevIndex);
-    }
-
-    console.log("Lowers Prompt: " + lowersPrompt);
-    if (lowersPrompt) {
-        let randInsert = Math.round(Math.random() * (pw.length - 1));
-        if(prevIndex.includes(randInsert)) {
-            while (prevIndex.includes(randInsert)) {
-                console.log("Previous element has been replaced, trying again");
-                randInsert = Math.round(Math.random() * (pw.length - 1));    
-            }
-        } 
-        let replacer = lowerAlphabet[Math.round(Math.random() * lowerAlphabet.length - 1)];
+        let replacer = specials[Math.round(Math.random() * chars.length - 1)];
         console.log("Replacing " + pw[randInsert] + " at " + randInsert + " with " + replacer);
         // wtf strings are immutable in javascript and must be changed another way
         // pw[randInsert] = specials[replacer];
         pw = pw.substr(0, randInsert) + replacer + pw.substr(randInsert + 1);
         prevIndex.push(randInsert);
         console.log(prevIndex);
-        
+        }
     }
-
-
-    console.log("Uppers Prompt: " + uppersPrompt);
-    if (uppersPrompt) {
-        let randInsert = Math.round(Math.random() * (pw.length - 1));
-        if(prevIndex.includes(randInsert)) {
-            while (prevIndex.includes(randInsert)) {
-                console.log("Previous element has been replaced, trying again");
-                randInsert = Math.round(Math.random() * (pw.length - 1));    
-            }
-        } 
-        let replacer = upperAlphabet[Math.round(Math.random() * upperAlphabet.length - 1)];
-        console.log("Replacing " + pw[randInsert] + " at " + randInsert + " with " + replacer);
-        // wtf strings are immutable in javascript and must be changed another way
-        // pw[randInsert] = specials[replacer];
-        pw = pw.substr(0, randInsert) + replacer + pw.substr(randInsert + 1);
-        prevIndex.push(randInsert);
-        console.log(prevIndex);
-    }
-
-
-    // Sets the password field to the generated password
-    document.getElementById("password").textContent = pw;
-    console.log(pw.length);
 }
-
 // End Init
-    // Generate a new password
-    document.getElementById('generate').addEventListener("click", function() {
-        init();
-    });
-    // End generate a new password
 
-    // Copy the generated passsword
-    document.getElementById('copy').addEventListener("click", function() {
-        var test = document.getElementById("password");
+// Generate a new password
+document.getElementById('generate').addEventListener("click", function() {
+    init();
+});
+// End generate a new password
 
-        test.select();
-        test.setSelectionRange(0, 999999);
+// Copy the generated passsword
+document.getElementById('copy').addEventListener("click", function() {
+    var test = document.getElementById("password");
 
-        document.execCommand("copy");
+    test.select();
+    test.setSelectionRange(0, 999999);
 
-        alert("Copied the text: " + test.value)
-    });
-    // End copy the generated password
+    document.execCommand("copy");
+
+    alert("Copied the text: " + test.value)
+});
+// End copy the generated password
 
 
