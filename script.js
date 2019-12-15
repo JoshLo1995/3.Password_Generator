@@ -73,6 +73,7 @@ function init() {
 
         if (pwl == null) {
             alert("You have exited the program.");
+            pwl = 0;
             break;
         } else if (pwl.length <= 0 || isNaN(pwl)) {
             pwl = alert("Invalid input. Please input an integer between and include 8 and 128.");        

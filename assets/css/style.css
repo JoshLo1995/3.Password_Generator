@@ -6,8 +6,6 @@
     min-width: 450px;
     border-radius: 5px;
     box-shadow: 1px 5px 4px #03396c;
-
-
 }
 
 header, h2 {
@@ -27,6 +25,10 @@ textarea {
     color: #b3cde0;
     border: 2px dashed #b3cde0;
     border-radius: 10px;
+    
+}
+textarea::-webkit-input-placeholder {
+    color: #b3cde0;
 }
 
 button {
