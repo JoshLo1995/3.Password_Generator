@@ -20,28 +20,43 @@
 
 const lowerAlphabet = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
 const upperAlphabet = [];
-let prevIndex = [];
-
 //Created a for loop to fill the upper alphabet because lazy
 for (let i = 0; i < lowerAlphabet.length; i++) {
     upperAlphabet.push(lowerAlphabet[i].toUpperCase());
 }
+let prevIndex = [];
+let userInput = undefined;
+let pw = "";
+let charsAllowed = [];
+
+// Keeps printing huge segments from specials, is it being pushed weirdly so that multiple characters are being stored in one element?
+let specials = ['!','@','#','$','%','^','&','*','(',')','-','+','=','\`', '\"','~','\/','\\','{','}','[',']'];
+let numbers = [];
 
 
 // Initializing array to store allowed charactrers for the password
 // Initializing all boolean values with prompts
-function init() {
-    prevIndex = [];
-    let charsAllowed = [];
-    let specials = ['!','@','#','$','%','^','&','*','(',')','-','+','=','\`', '\"','~',"\/","\\",'{','}','[',']']
-    let numbers = [];
-    
 
+
+function init() {
+    //Reset Variables
+    userInput = undefined;
+    prevIndex = [];
+    pw = "";
+    charsAllowed = [];
+    createPassword(promptUser());
+    // debugger;
+}
+
+function promptUser() {
     // Get user input by prompting for character preferences
     let specialsPrompt = confirm("Do you want to have special characters in your password?");
     if(specialsPrompt) {
-        charsAllowed.push(specials);
+        for (let i = 0; i < specials.length; i++) {
+            charsAllowed.push(specials[i]);
+        }
     }
+
 
     let numbersPrompt = confirm("Do you want numbers in your password?");
     if(numbersPrompt) {
@@ -67,89 +82,112 @@ function init() {
 
     if (!specialsPrompt && !numbersPrompt && !lowersPrompt && !uppersPrompt) {
         alert("Need to have characters to put into password.");
-        init();
-
+        prompt();
+    
     }
 
     // While loop that ensures user input is valid by checking type. Also gives user an option to exit out of the program.
-    let pwl = null;
     while(true) {
-        pwl = prompt("How many characters long would you like your password to be? Type an integer between and including 8 and 128.");
+        this.userInput = prompt("How many characters long would you like your password to be? Type a number between and including 8 and 128.");
+        const maxPasswordLength = 128;
+        const minPasswordLength = 8;
 
-        if (pwl == null) {
+        if (this.userInput === null) {
             alert("You have exited the program.");
-            pwl = 0;
+            this.userInput = 0;
             break;
-        } else if (pwl.length <= 0 || isNaN(pwl)) {
-            pwl = alert("Invalid input. Please input an integer between and include 8 and 128.");        
-        } else if (parseInt(pwl) < 8 || parseInt(pwl) > 128) {
-            alert("Integer not in range. Please input an integer between and including 8 and 128.");
+        } else if (this.userInput.length <= 0 || isNaN(this.userInput)) {
+            alert("Invalid input. Please input an integer between and include 8 and 128.");        
+        } else if (parseInt(this.userInput) < minPasswordLength || parseInt(this.userInput) > maxPasswordLength) {
+            alert("Number not in range. Please input an integer between and including 8 and 128.");
         } else {
-            pwl = parseInt(pwl);
+            pwl = parseInt(this.userInput);
             break;
         }
     }
-    // End user input 
-       
-    let pw = "";
+
+    returnList = [specialsPrompt, numbersPrompt, lowersPrompt, uppersPrompt];
+    return returnList;
+// End user input 
+}
+
+function createPassword(boolArray) {
+    pw = "";    
+    console.log("About to create password, the created length will be " + this.userInput + "\nPassword is currently: " + pw);
     // Creating password through concatanation.
-    for(let i = 0; i < pwl; i++) {
+
+    // debugger;
+    while(pw.length < this.userInput) {
         let selector = Math.round(Math.random() * (charsAllowed.length - 1));
         pw += charsAllowed[selector];
-
+        
         // DO NOT DELETE, FOR TESTING WHEN UNDEFINED VALUES ARE RETURNED
         // console.log(selector);
         // console.log(charsAllowed.length);
         // console.log(pw);
     }
+    console.log("the created password has a length of: " + pw.length);
 
     // Ensuring that at least one of each desired character type is inserted into the password
-    
-    console.log("Specials Prompt: " + specialsPrompt);
-    replace(specialsPrompt, specials);
+    console.log("Specials Prompt: " + boolArray[0]);
+    this.replace(boolArray[0], specials);
  
-    console.log("Numbers Prompt: " + numbersPrompt);
-    replace(numbersPrompt, numbers);
+    console.log("Numbers Prompt: " + boolArray[1]);
+    this.replace(boolArray[1], numbers);
 
-    console.log("Lowers Prompt: " + lowersPrompt);
-    replace(lowersPrompt, lowerAlphabet);
+    console.log("Lowers Prompt: " + boolArray[2]);
+    this.replace(boolArray[2], lowerAlphabet);
 
-    console.log("Uppers Prompt: " + uppersPrompt);
-    replace(uppersPrompt, upperAlphabet);
+    console.log("Uppers Prompt: " + boolArray[3]);
+    this.replace(boolArray[3], upperAlphabet);
+
+    console.log("The generated password has been altered and now has a length of: " + pw.length);
 
     // Sets the password field to the generated password
     document.getElementById("password").textContent = pw;
-    console.log(pw.length);
+}
 
-    
-    function replace(bool, chars) {
-        if (bool) {
-            let randInsert = Math.round(Math.random() * (pw.length - 1));
-        if(prevIndex.includes(randInsert)) {
-            while (prevIndex.includes(randInsert)) {
-                console.log("Previous element has been replaced, trying again");
-                randInsert = Math.round(Math.random() * (pw.length - 1));    
-            }
-        }
-        let replacer = specials[Math.round(Math.random() * chars.length - 1)];
-        console.log("Replacing " + pw[randInsert] + " at " + randInsert + " with " + replacer);
-        // wtf strings are immutable in javascript and must be changed another way
-        // pw[randInsert] = specials[replacer];
-        pw = pw.substr(0, randInsert) + replacer + pw.substr(randInsert + 1);
-        prevIndex.push(randInsert);
-        console.log(prevIndex);
+function replace(bool, chars) {
+    // Checks to see if a desired character is requested, then generates a random index to get a random element from the desired pool of characters
+    if (bool) {
+        let randInsert = Math.round(Math.random() * (chars.length - 1));
+    if(prevIndex.includes(randInsert)) {
+        while (prevIndex.includes(randInsert)) {
+            console.log("Previous element has been replaced, trying again");
+            randInsert = Math.round(Math.random() * (chars.length - 1));    
         }
     }
-}
-// End Init
 
-// Generate a new password
+    // Print statement for testing
+    // console.log("length of array " + chars.length + "\nRand Insert: " + randInsert)
+    let replacer = chars[Math.round(Math.random() * chars.length - 1)];
+    console.log("Replacing " + pw[randInsert] + " at " + randInsert + " with " + replacer);
+    // wtf strings are immutable in javascript and must be changed another way
+    // pw[randInsert] = specials[replacer];
+
+    if (replacer === undefined) {
+        console.log("undefined was about to be placed in password, trying again");
+        while (replacer === undefined) {
+            randInsert = Math.round(Math.random() * (chars.length - 1));
+            replacer = chars[randInsert]
+        }
+    }
+    // Replace password with substring up to the replacement index, add the replacer, then add substring from one index after the replaced until the end
+    pw = pw.substr(0, randInsert) + replacer + pw.substr(randInsert + 1, pw.length);
+    prevIndex.push(randInsert);
+    }
+}
+
+
+
+// EVENT LISTENERS ON BUTTONS
+// Generate a new password when button is clicked
 document.getElementById('generate').addEventListener("click", function() {
     init();
 });
 // End generate a new password
 
-// Copy the generated passsword
+// Copy the generated passsword to clipboard
 document.getElementById('copy').addEventListener("click", function() {
     var test = document.getElementById("password");
 
